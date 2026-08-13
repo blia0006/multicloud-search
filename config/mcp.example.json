@@ -1,0 +1,21 @@
+{
+  "_comment": [
+    "MCP 客户端配置模板（本文件入库，只放占位符，不含任何本机路径）。",
+    "用法：在项目根目录执行 `python3 tools/init_project.py`，脚本会按你机器上的实际路径",
+    "生成 config/mcp.local.json（已被 .gitignore 忽略），把其中 mcpServers 内容粘贴到",
+    "MCP 客户端配置即可（Codebuddy：IDE 设置 → MCP；Claude Desktop：claude_desktop_config.json）。",
+    "MCP 协议要求 args 为绝对路径，因此不能写相对路径。",
+    "若 python3 不在 PATH，用 `python3 tools/init_project.py --python /usr/local/bin/python3` 指定解释器。"
+  ],
+  "mcpServers": {
+    "multicloud-search": {
+      "command": "python3",
+      "args": [
+        "/ABSOLUTE/PATH/TO/PROJECT/mcp/multicloud_mcp_server.py"
+      ],
+      "env": {
+        "MCS_DATA_DIR": "/ABSOLUTE/PATH/TO/PROJECT/data"
+      }
+    }
+  }
+}

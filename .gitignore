@@ -1,0 +1,87 @@
+# ============================================================================
+# 多云产品信息一站式检索平台 —— Git 忽略规则
+# 原则：源码 / 数据 / 文档 / 配置模板 全部入库；本机路径、可再生产物、缓存 一律不入库。
+# ============================================================================
+
+# ---- 1. 含本机绝对路径，绝对不能提交（会泄露用户名与目录结构）----------------
+config/mcp.local.json
+
+# ---- 2. 可再生产物（导师 clone 后由 tools/init_project.py 重新生成）--------
+# dist/    ：单文件 HTML，由 tools/build_static.py 生成
+# reports/ ：链接巡检 CSV、价格周报，由 tools/ 与 examples/ 生成
+# 注意：.gitignore 只认行首 # 为注释，模式后面不能跟行尾注释，否则模式失效
+dist/
+reports/
+
+# ---- 3. Python 缓存与虚拟环境 ----------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+ENV/
+.Python
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---- 4. 操作系统垃圾文件 ---------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# ---- 5. 编辑器 / IDE 私有配置 ----------------------------------------------
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.settings/
+
+# ---- 6. 打包与临时文件 -----------------------------------------------------
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+*.bak
+*.tmp
+*.orig
+*.rej
+*.log
+tmp/
+.tmp/
+
+# ---- 7. CodeBuddy 运行时目录（技能定义必须保留，见文件末尾说明）-------------
+.codebuddy/logs/
+.codebuddy/cache/
+.codebuddy/teams/
+.codebuddy/tmp/
+.codebuddy/history/
+
+# ---- 8. 敏感信息兜底（本项目零密钥，此处为防御性规则）----------------------
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*credentials*.json
+*secret*.json
+
+# ============================================================================
+# 必须入库、不要忽略的内容（常见误操作提醒）：
+#   .codebuddy/skills/          → Codebuddy Skill 定义，删了 Agent 就不会用了
+#   config/mcp.example.json     → MCP 配置模板（仅占位符，安全）
+#   data/*.json                 → 平台唯一数据源
+#   requirements.txt            → 零依赖声明（空清单也要留）
+#   .gitattributes              → 跨平台换行符统一
+# ============================================================================

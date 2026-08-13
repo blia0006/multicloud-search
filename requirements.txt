@@ -1,0 +1,12 @@
+# 本项目 **不需要任何第三方依赖**。
+#
+# 运行环境要求：Python 3.8+（仅使用标准库：http.server / json / urllib / argparse / subprocess 等）
+# 因此本文件为空依赖清单，保留它是为了让 CI 与评审者明确「零依赖」这一事实：
+#
+#   pip install -r requirements.txt   # 不会安装任何包，正常退出
+#
+# 校验方式（应无任何第三方 import）：
+#   grep -rhoE "^(import|from) [a-zA-Z_]+" core server mcp tools cli.py | sort -u
+#
+# 若后续接入厂商计费 OpenAPI 做自动抓取（见 docs/DATA_SOURCES.md 第 2 节），
+# 再在此处添加对应 SDK，并保持密钥仅从环境变量读取、禁止写入仓库。

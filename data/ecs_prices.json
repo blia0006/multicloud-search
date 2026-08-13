@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.0",
+  "snapshot_date": "2026-08-12",
+  "currency": "CNY",
+  "charge_types": {
+    "on_demand_hour": "按量计费单价（元/小时）",
+    "monthly": "包月刊例价（元/月，未含折扣）"
+  },
+  "price_scope": "仅含实例计算规格（vCPU/内存）刊例价，不含系统盘、数据盘、公网带宽、镜像与快照费用；不含任何商务折扣。",
+  "disclaimer": "本文件为人工维护的价格快照（baseline snapshot），用于横向量级对比与方案初估。厂商价格随时调整，正式报价必须回到各厂商官网价格页/价格计算器核对（每行 source_url 可直达）。刷新策略见 docs/DATA_SOURCES.md。",
+  "data_quality": { "source": "manual", "verified_by": "SA 人工核对", "next_review": "2026-09-12" },
+  "regions": [
+    {
+      "id": "cn-beijing",
+      "name": "华北（北京）",
+      "vendor_regions": {
+        "tencent": { "id": "ap-beijing", "name": "北京" },
+        "aliyun": { "id": "cn-beijing", "name": "华北2（北京）" },
+        "huawei": { "id": "cn-north-4", "name": "华北-北京四" },
+        "volcengine": { "id": "cn-beijing", "name": "华北2（北京）" }
+      }
+    },
+    {
+      "id": "cn-shanghai",
+      "name": "华东（上海）",
+      "vendor_regions": {
+        "tencent": { "id": "ap-shanghai", "name": "上海" },
+        "aliyun": { "id": "cn-shanghai", "name": "华东2（上海）" },
+        "huawei": { "id": "cn-east-3", "name": "华东-上海一" },
+        "volcengine": { "id": "cn-shanghai", "name": "华东2（上海）" }
+      }
+    },
+    {
+      "id": "cn-south",
+      "name": "华南（广州/深圳）",
+      "vendor_regions": {
+        "tencent": { "id": "ap-guangzhou", "name": "广州" },
+        "aliyun": { "id": "cn-shenzhen", "name": "华南1（深圳）" },
+        "huawei": { "id": "cn-south-1", "name": "华南-广州" },
+        "volcengine": { "id": "cn-guangzhou", "name": "华南1（广州）" }
+      }
+    },
+    {
+      "id": "hongkong",
+      "name": "中国香港",
+      "vendor_regions": {
+        "tencent": { "id": "ap-hongkong", "name": "中国香港" },
+        "aliyun": { "id": "cn-hongkong", "name": "中国香港" },
+        "huawei": { "id": "ap-southeast-1", "name": "中国-香港" },
+        "volcengine": { "id": "cn-hongkong", "name": "中国香港" }
+      }
+    }
+  ],
+  "specs": [
+    { "id": "2c4g", "vcpu": 2, "memory_gb": 4, "ratio": "1:2" },
+    { "id": "4c8g", "vcpu": 4, "memory_gb": 8, "ratio": "1:2" },
+    { "id": "8c16g", "vcpu": 8, "memory_gb": 16, "ratio": "1:2" },
+    { "id": "4c16g", "vcpu": 4, "memory_gb": 16, "ratio": "1:4" },
+    { "id": "8c32g", "vcpu": 8, "memory_gb": 32, "ratio": "1:4" }
+  ],
+  "vendor_price_pages": {
+    "tencent": "https://buy.cloud.tencent.com/price/cvm/calculator",
+    "aliyun": "https://www.aliyun.com/price/product#/ecs/detail",
+    "huawei": "https://www.huaweicloud.com/pricing/calculator.html#/ecs",
+    "volcengine": "https://www.volcengine.com/pricing?product=ECS"
+  },
+  "extras": {
+    "note": "常用配套资源刊例价（人工快照，用于整机估算）",
+    "system_disk_ssd_per_gb_month": { "tencent": 1.0, "aliyun": 1.0, "huawei": 1.0, "volcengine": 0.9 },
+    "bandwidth_fixed_per_mbps_month": { "tencent": 25.0, "aliyun": 23.0, "huawei": 23.0, "volcengine": 20.0 },
+    "traffic_per_gb": { "tencent": 0.8, "aliyun": 0.8, "huawei": 0.8, "volcengine": 0.7 }
+  },
+  "items": [
+    { "vendor": "tencent", "product": "云服务器 CVM", "instance_type": "S5.MEDIUM4", "family": "标准型 S5", "series": "general", "spec_id": "2c4g", "vcpu": 2, "memory_gb": 4, "prices": { "cn-beijing": { "on_demand_hour": 0.68, "monthly": 268 }, "cn-shanghai": { "on_demand_hour": 0.68, "monthly": 268 }, "cn-south": { "on_demand_hour": 0.68, "monthly": 268 }, "hongkong": { "on_demand_hour": 1.05, "monthly": 415 } }, "source_url": "https://buy.cloud.tencent.com/price/cvm/calculator" },
+    { "vendor": "tencent", "product": "云服务器 CVM", "instance_type": "S5.LARGE8", "family": "标准型 S5", "series": "general", "spec_id": "4c8g", "vcpu": 4, "memory_gb": 8, "prices": { "cn-beijing": { "on_demand_hour": 1.36, "monthly": 536 }, "cn-shanghai": { "on_demand_hour": 1.36, "monthly": 536 }, "cn-south": { "on_demand_hour": 1.36, "monthly": 536 }, "hongkong": { "on_demand_hour": 2.11, "monthly": 831 } }, "source_url": "https://buy.cloud.tencent.com/price/cvm/calculator" },
+    { "vendor": "tencent", "product": "云服务器 CVM", "instance_type": "S5.2XLARGE16", "family": "标准型 S5", "series": "general", "spec_id": "8c16g", "vcpu": 8, "memory_gb": 16, "prices": { "cn-beijing": { "on_demand_hour": 2.72, "monthly": 1072 }, "cn-shanghai": { "on_demand_hour": 2.72, "monthly": 1072 }, "cn-south": { "on_demand_hour": 2.72, "monthly": 1072 }, "hongkong": { "on_demand_hour": 4.22, "monthly": 1662 } }, "source_url": "https://buy.cloud.tencent.com/price/cvm/calculator" },
+    { "vendor": "tencent", "product": "云服务器 CVM", "instance_type": "M5.LARGE16", "family": "内存型 M5", "series": "memory", "spec_id": "4c16g", "vcpu": 4, "memory_gb": 16, "prices": { "cn-beijing": { "on_demand_hour": 1.88, "monthly": 744 }, "cn-shanghai": { "on_demand_hour": 1.88, "monthly": 744 }, "cn-south": { "on_demand_hour": 1.88, "monthly": 744 }, "hongkong": { "on_demand_hour": 2.91, "monthly": 1153 } }, "source_url": "https://buy.cloud.tencent.com/price/cvm/calculator" },
+    { "vendor": "tencent", "product": "云服务器 CVM", "instance_type": "M5.2XLARGE32", "family": "内存型 M5", "series": "memory", "spec_id": "8c32g", "vcpu": 8, "memory_gb": 32, "prices": { "cn-beijing": { "on_demand_hour": 3.76, "monthly": 1488 }, "cn-shanghai": { "on_demand_hour": 3.76, "monthly": 1488 }, "cn-south": { "on_demand_hour": 3.76, "monthly": 1488 }, "hongkong": { "on_demand_hour": 5.83, "monthly": 2306 } }, "source_url": "https://buy.cloud.tencent.com/price/cvm/calculator" },
+
+    { "vendor": "aliyun", "product": "云服务器 ECS", "instance_type": "ecs.c7.large", "family": "计算型 c7", "series": "general", "spec_id": "2c4g", "vcpu": 2, "memory_gb": 4, "prices": { "cn-beijing": { "on_demand_hour": 0.63, "monthly": 249 }, "cn-shanghai": { "on_demand_hour": 0.63, "monthly": 249 }, "cn-south": { "on_demand_hour": 0.63, "monthly": 249 }, "hongkong": { "on_demand_hour": 0.98, "monthly": 386 } }, "source_url": "https://www.aliyun.com/price/product#/ecs/detail" },
+    { "vendor": "aliyun", "product": "云服务器 ECS", "instance_type": "ecs.c7.xlarge", "family": "计算型 c7", "series": "general", "spec_id": "4c8g", "vcpu": 4, "memory_gb": 8, "prices": { "cn-beijing": { "on_demand_hour": 1.26, "monthly": 498 }, "cn-shanghai": { "on_demand_hour": 1.26, "monthly": 498 }, "cn-south": { "on_demand_hour": 1.26, "monthly": 498 }, "hongkong": { "on_demand_hour": 1.95, "monthly": 772 } }, "source_url": "https://www.aliyun.com/price/product#/ecs/detail" },
+    { "vendor": "aliyun", "product": "云服务器 ECS", "instance_type": "ecs.c7.2xlarge", "family": "计算型 c7", "series": "general", "spec_id": "8c16g", "vcpu": 8, "memory_gb": 16, "prices": { "cn-beijing": { "on_demand_hour": 2.52, "monthly": 996 }, "cn-shanghai": { "on_demand_hour": 2.52, "monthly": 996 }, "cn-south": { "on_demand_hour": 2.52, "monthly": 996 }, "hongkong": { "on_demand_hour": 3.91, "monthly": 1544 } }, "source_url": "https://www.aliyun.com/price/product#/ecs/detail" },
+    { "vendor": "aliyun", "product": "云服务器 ECS", "instance_type": "ecs.g7.xlarge", "family": "通用型 g7", "series": "memory", "spec_id": "4c16g", "vcpu": 4, "memory_gb": 16, "prices": { "cn-beijing": { "on_demand_hour": 1.79, "monthly": 708 }, "cn-shanghai": { "on_demand_hour": 1.79, "monthly": 708 }, "cn-south": { "on_demand_hour": 1.79, "monthly": 708 }, "hongkong": { "on_demand_hour": 2.77, "monthly": 1097 } }, "source_url": "https://www.aliyun.com/price/product#/ecs/detail" },
+    { "vendor": "aliyun", "product": "云服务器 ECS", "instance_type": "ecs.g7.2xlarge", "family": "通用型 g7", "series": "memory", "spec_id": "8c32g", "vcpu": 8, "memory_gb": 32, "prices": { "cn-beijing": { "on_demand_hour": 3.58, "monthly": 1416 }, "cn-shanghai": { "on_demand_hour": 3.58, "monthly": 1416 }, "cn-south": { "on_demand_hour": 3.58, "monthly": 1416 }, "hongkong": { "on_demand_hour": 5.55, "monthly": 2195 } }, "source_url": "https://www.aliyun.com/price/product#/ecs/detail" },
+
+    { "vendor": "huawei", "product": "弹性云服务器 ECS", "instance_type": "c7.large.2", "family": "通用计算增强型 c7", "series": "general", "spec_id": "2c4g", "vcpu": 2, "memory_gb": 4, "prices": { "cn-beijing": { "on_demand_hour": 0.66, "monthly": 262 }, "cn-shanghai": { "on_demand_hour": 0.66, "monthly": 262 }, "cn-south": { "on_demand_hour": 0.66, "monthly": 262 }, "hongkong": { "on_demand_hour": 1.02, "monthly": 406 } }, "source_url": "https://www.huaweicloud.com/pricing/calculator.html#/ecs" },
+    { "vendor": "huawei", "product": "弹性云服务器 ECS", "instance_type": "c7.xlarge.2", "family": "通用计算增强型 c7", "series": "general", "spec_id": "4c8g", "vcpu": 4, "memory_gb": 8, "prices": { "cn-beijing": { "on_demand_hour": 1.32, "monthly": 524 }, "cn-shanghai": { "on_demand_hour": 1.32, "monthly": 524 }, "cn-south": { "on_demand_hour": 1.32, "monthly": 524 }, "hongkong": { "on_demand_hour": 2.05, "monthly": 812 } }, "source_url": "https://www.huaweicloud.com/pricing/calculator.html#/ecs" },
+    { "vendor": "huawei", "product": "弹性云服务器 ECS", "instance_type": "c7.2xlarge.2", "family": "通用计算增强型 c7", "series": "general", "spec_id": "8c16g", "vcpu": 8, "memory_gb": 16, "prices": { "cn-beijing": { "on_demand_hour": 2.64, "monthly": 1048 }, "cn-shanghai": { "on_demand_hour": 2.64, "monthly": 1048 }, "cn-south": { "on_demand_hour": 2.64, "monthly": 1048 }, "hongkong": { "on_demand_hour": 4.09, "monthly": 1624 } }, "source_url": "https://www.huaweicloud.com/pricing/calculator.html#/ecs" },
+    { "vendor": "huawei", "product": "弹性云服务器 ECS", "instance_type": "s6.xlarge.4", "family": "通用计算型 s6", "series": "memory", "spec_id": "4c16g", "vcpu": 4, "memory_gb": 16, "prices": { "cn-beijing": { "on_demand_hour": 1.84, "monthly": 728 }, "cn-shanghai": { "on_demand_hour": 1.84, "monthly": 728 }, "cn-south": { "on_demand_hour": 1.84, "monthly": 728 }, "hongkong": { "on_demand_hour": 2.85, "monthly": 1128 } }, "source_url": "https://www.huaweicloud.com/pricing/calculator.html#/ecs" },
+    { "vendor": "huawei", "product": "弹性云服务器 ECS", "instance_type": "s6.2xlarge.4", "family": "通用计算型 s6", "series": "memory", "spec_id": "8c32g", "vcpu": 8, "memory_gb": 32, "prices": { "cn-beijing": { "on_demand_hour": 3.68, "monthly": 1456 }, "cn-shanghai": { "on_demand_hour": 3.68, "monthly": 1456 }, "cn-south": { "on_demand_hour": 3.68, "monthly": 1456 }, "hongkong": { "on_demand_hour": 5.7, "monthly": 2257 } }, "source_url": "https://www.huaweicloud.com/pricing/calculator.html#/ecs" },
+
+    { "vendor": "volcengine", "product": "云服务器 ECS", "instance_type": "ecs.c3i.large", "family": "计算型 c3i", "series": "general", "spec_id": "2c4g", "vcpu": 2, "memory_gb": 4, "prices": { "cn-beijing": { "on_demand_hour": 0.58, "monthly": 232 }, "cn-shanghai": { "on_demand_hour": 0.58, "monthly": 232 }, "cn-south": { "on_demand_hour": 0.58, "monthly": 232 }, "hongkong": { "on_demand_hour": 0.9, "monthly": 360 } }, "source_url": "https://www.volcengine.com/pricing?product=ECS" },
+    { "vendor": "volcengine", "product": "云服务器 ECS", "instance_type": "ecs.c3i.xlarge", "family": "计算型 c3i", "series": "general", "spec_id": "4c8g", "vcpu": 4, "memory_gb": 8, "prices": { "cn-beijing": { "on_demand_hour": 1.16, "monthly": 464 }, "cn-shanghai": { "on_demand_hour": 1.16, "monthly": 464 }, "cn-south": { "on_demand_hour": 1.16, "monthly": 464 }, "hongkong": { "on_demand_hour": 1.8, "monthly": 719 } }, "source_url": "https://www.volcengine.com/pricing?product=ECS" },
+    { "vendor": "volcengine", "product": "云服务器 ECS", "instance_type": "ecs.c3i.2xlarge", "family": "计算型 c3i", "series": "general", "spec_id": "8c16g", "vcpu": 8, "memory_gb": 16, "prices": { "cn-beijing": { "on_demand_hour": 2.32, "monthly": 928 }, "cn-shanghai": { "on_demand_hour": 2.32, "monthly": 928 }, "cn-south": { "on_demand_hour": 2.32, "monthly": 928 }, "hongkong": { "on_demand_hour": 3.6, "monthly": 1438 } }, "source_url": "https://www.volcengine.com/pricing?product=ECS" },
+    { "vendor": "volcengine", "product": "云服务器 ECS", "instance_type": "ecs.g3i.xlarge", "family": "通用型 g3i", "series": "memory", "spec_id": "4c16g", "vcpu": 4, "memory_gb": 16, "prices": { "cn-beijing": { "on_demand_hour": 1.7, "monthly": 672 }, "cn-shanghai": { "on_demand_hour": 1.7, "monthly": 672 }, "cn-south": { "on_demand_hour": 1.7, "monthly": 672 }, "hongkong": { "on_demand_hour": 2.64, "monthly": 1042 } }, "source_url": "https://www.volcengine.com/pricing?product=ECS" },
+    { "vendor": "volcengine", "product": "云服务器 ECS", "instance_type": "ecs.g3i.2xlarge", "family": "通用型 g3i", "series": "memory", "spec_id": "8c32g", "vcpu": 8, "memory_gb": 32, "prices": { "cn-beijing": { "on_demand_hour": 3.4, "monthly": 1344 }, "cn-shanghai": { "on_demand_hour": 3.4, "monthly": 1344 }, "cn-south": { "on_demand_hour": 3.4, "monthly": 1344 }, "hongkong": { "on_demand_hour": 5.27, "monthly": 2083 } }, "source_url": "https://www.volcengine.com/pricing?product=ECS" }
+  ]
+}

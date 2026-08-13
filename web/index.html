@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>多云产品信息一站式检索平台 · 腾讯云 / 阿里云 / 华为云 / 火山引擎</title>
+<style>
+  :root{
+    --bg:#f5f7fb; --panel:#ffffff; --border:#e5e8ef; --text:#1b2233; --muted:#6b7488;
+    --brand:#0052D9; --tencent:#0052D9; --aliyun:#FF6A00; --huawei:#C7000B; --volcengine:#1664FF;
+    --ok:#00a870; --warn:#ed7b2f; --radius:12px; --shadow:0 1px 2px rgba(16,24,40,.05),0 6px 20px rgba(16,24,40,.06);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font:14px/1.6 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--brand);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 20px 56px}
+  header.top{background:linear-gradient(120deg,#0b1f4b 0%,#0052D9 55%,#1664FF 100%);color:#fff;padding:26px 0 20px}
+  header.top .wrap{padding-bottom:0}
+  .title{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .title h1{margin:0;font-size:21px;letter-spacing:.3px}
+  .title .tag{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);padding:2px 9px;border-radius:999px;font-size:12px}
+  .subtitle{margin:8px 0 0;opacity:.86;font-size:13px}
+  .tabs{display:flex;gap:6px;margin-top:18px;flex-wrap:wrap}
+  .tabs button{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);color:#fff;padding:8px 16px;border-radius:10px 10px 0 0;cursor:pointer;font-size:14px}
+  .tabs button.active{background:var(--bg);color:var(--text);border-color:var(--bg);font-weight:600}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-top:18px}
+  .panel h2{margin:0 0 4px;font-size:16px}
+  .panel .hint{color:var(--muted);font-size:12.5px;margin:0 0 14px}
+  .searchbar{display:flex;gap:10px;flex-wrap:wrap}
+  .searchbar input[type=text]{flex:1;min-width:260px;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font-size:15px;outline:none}
+  .searchbar input[type=text]:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(0,82,217,.12)}
+  button.primary{background:var(--brand);color:#fff;border:0;padding:12px 22px;border-radius:10px;cursor:pointer;font-size:15px}
+  button.primary:hover{filter:brightness(1.06)}
+  button.ghost{background:#fff;border:1px solid var(--border);padding:7px 12px;border-radius:8px;cursor:pointer;font-size:12.5px;color:var(--text)}
+  button.ghost:hover{border-color:var(--brand);color:var(--brand)}
+  .filters{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:14px}
+  .field{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+  select,input[type=number]{padding:7px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--text);font-size:13px}
+  .vendor-toggle{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);padding:6px 11px;border-radius:999px;cursor:pointer;background:#fff;font-size:13px;user-select:none}
+  .vendor-toggle input{accent-color:var(--brand)}
+  .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .chip{background:#eef2fb;border:1px solid #dde5f7;color:#20335c;padding:5px 11px;border-radius:999px;font-size:12.5px;cursor:pointer}
+  .chip:hover{background:#e2eaff}
+  .meta-row{display:flex;gap:18px;flex-wrap:wrap;color:var(--muted);font-size:12.5px;margin-top:14px;align-items:center}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px;margin-top:14px}
+  .card{border:1px solid var(--border);border-radius:var(--radius);padding:14px;background:#fff;display:flex;flex-direction:column;gap:8px;transition:.15s}
+  .card:hover{box-shadow:var(--shadow);transform:translateY(-1px)}
+  .card .head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+  .badge{color:#fff;font-size:11.5px;padding:3px 9px;border-radius:6px;white-space:nowrap;font-weight:600}
+  .card h3{margin:0;font-size:15px;line-height:1.4}
+  .card .en{color:var(--muted);font-size:12px}
+  .card .sum{color:#414a60;font-size:13px;min-height:40px}
+  .card .foot{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:auto;padding-top:6px;border-top:1px dashed var(--border)}
+  .pill{background:#f2f4f8;color:#4a5468;border-radius:6px;padding:2px 8px;font-size:11.5px}
+  table{width:100%;border-collapse:collapse;margin-top:12px;font-size:13.5px}
+  th,td{border-bottom:1px solid var(--border);padding:10px 8px;text-align:left;white-space:nowrap}
+  th{background:#f7f9fc;color:#4a5468;font-weight:600;font-size:12.5px;position:sticky;top:0}
+  tr.cheapest td{background:#f0fbf6}
+  .price{font-weight:700}
+  .price.best{color:var(--ok)}
+  .delta{color:var(--warn);font-size:12.5px}
+  .tablewrap{overflow:auto;max-height:520px;border:1px solid var(--border);border-radius:10px;margin-top:12px}
+  .notice{background:#fff8ef;border:1px solid #ffe0bb;color:#8a5300;padding:10px 12px;border-radius:10px;font-size:12.5px;margin-top:14px}
+  .summary{display:flex;gap:16px;flex-wrap:wrap;margin-top:14px}
+  .stat{border:1px solid var(--border);border-radius:10px;padding:10px 14px;min-width:170px;background:#fbfcfe}
+  .stat .k{color:var(--muted);font-size:12px}
+  .stat .v{font-size:16px;font-weight:700;margin-top:2px}
+  pre{background:#0f1729;color:#d6e2ff;padding:14px;border-radius:10px;overflow:auto;font-size:12.5px;line-height:1.55}
+  code.inline{background:#eef1f7;padding:1px 6px;border-radius:5px;font-size:12.5px}
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px}
+  .empty{padding:26px;text-align:center;color:var(--muted)}
+  footer{color:var(--muted);font-size:12.5px;text-align:center;padding:22px 0 0}
+  .equiv-table td{white-space:normal}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="title">
+      <h1>多云产品信息一站式检索平台</h1>
+      <span class="tag">腾讯云</span><span class="tag">阿里云</span><span class="tag">华为云</span><span class="tag">火山引擎</span>
+      <span class="tag" id="modeTag">加载中…</span>
+    </div>
+    <p class="subtitle">面向解决方案架构师（SA）的 all-in-one 检索入口：产品文档聚合搜索 · ECS/CVM 价格对比 · 同类产品对照 · MCP/Skills 供 Agent 调用</p>
+    <div class="tabs">
+      <button data-tab="docs" class="active">产品文档搜索</button>
+      <button data-tab="price">ECS 价格对比</button>
+      <button data-tab="equiv">跨云同类对照</button>
+      <button data-tab="api">API / Agent 接入</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- ============ 文档搜索 ============ -->
+  <section id="tab-docs">
+    <div class="panel">
+      <h2>产品文档聚合搜索</h2>
+      <p class="hint">一次输入，四家云厂商同时检索。支持中文名、英文名、产品缩写（CVM / OSS / OBS / TOS）与能力关键词（对象存储、Kubernetes、大模型…），自动带出四家同类产品。</p>
+      <div class="searchbar">
+        <input type="text" id="q" placeholder="例如：对象存储 / Kubernetes / CVM / Redis / 大模型 / WAF" autocomplete="off" />
+        <button class="primary" id="btnSearch">搜索</button>
+      </div>
+      <div class="chips" id="quickChips"></div>
+      <div class="filters">
+        <span class="field">厂商：</span>
+        <span id="docVendors"></span>
+        <span class="field">类目：<select id="docCategory"><option value="">全部</option></select></span>
+        <span class="field">条数：<select id="docLimit"><option>12</option><option selected>24</option><option>48</option><option>200</option></select></span>
+      </div>
+      <div class="meta-row" id="docMeta"></div>
+    </div>
+    <div class="cards" id="docResults"></div>
+    <div class="panel" id="docFallback" style="display:none"></div>
+  </section>
+
+  <!-- ============ 价格对比 ============ -->
+  <section id="tab-price" style="display:none">
+    <div class="panel">
+      <h2>ECS / CVM 价格对比</h2>
+      <p class="hint">同一地域、同一配置下四家云服务器刊例价横向对比（不含系统盘、公网带宽与商务折扣）。可按地域、规格、实例系列与计费口径筛选。</p>
+      <div class="filters">
+        <span class="field">地域：<select id="pRegion"></select></span>
+        <span class="field">规格：<select id="pSpec"><option value="">全部</option></select></span>
+        <span class="field">vCPU：<select id="pVcpu"><option value="">全部</option><option>2</option><option>4</option><option>8</option></select></span>
+        <span class="field">内存(GB)：<select id="pMem"><option value="">全部</option><option>4</option><option>8</option><option>16</option><option>32</option></select></span>
+        <span class="field">系列：<select id="pSeries"><option value="">全部</option><option value="general">计算/标准型 1:2</option><option value="memory">通用/内存型 1:4</option></select></span>
+        <span class="field">排序口径：<select id="pCharge"><option value="monthly">包月（元/月）</option><option value="on_demand_hour">按量（元/小时）</option></select></span>
+      </div>
+      <div class="filters">
+        <span class="field">厂商：</span><span id="priceVendors"></span>
+        <button class="ghost" id="btnCopyMd">复制为 Markdown</button>
+        <button class="ghost" id="btnCsv">导出 CSV</button>
+      </div>
+      <div class="summary" id="priceSummary"></div>
+      <div class="tablewrap"><table id="priceTable"><thead></thead><tbody></tbody></table></div>
+      <div class="notice" id="priceNotice"></div>
+    </div>
+    <div class="panel">
+      <h2>配套资源参考单价（整机估算用）</h2>
+      <p class="hint">云服务器实例价格不含以下资源，做整体方案报价时需叠加。</p>
+      <div class="tablewrap"><table id="extraTable"><thead></thead><tbody></tbody></table></div>
+    </div>
+  </section>
+
+  <!-- ============ 同类对照 ============ -->
+  <section id="tab-equiv" style="display:none">
+    <div class="panel">
+      <h2>跨云同类产品对照</h2>
+      <p class="hint">输入任一家的产品名或缩写，立刻得到四家的对位产品与官方文档链接，方便做迁移映射与方案替换说明。</p>
+      <div class="searchbar">
+        <input type="text" id="eq" placeholder="例如：CVM / OSS / DCS / veDB / 弹性伸缩 / 日志服务" autocomplete="off" />
+        <button class="primary" id="btnEquiv">对照</button>
+      </div>
+      <div class="chips" id="equivChips"></div>
+    </div>
+    <div id="equivResults"></div>
+  </section>
+
+  <!-- ============ API / Agent ============ -->
+  <section id="tab-api" style="display:none">
+    <div class="panel">
+      <h2>API / Agent 接入</h2>
+      <p class="hint">同一份数据与逻辑，同时提供给人工界面、REST API、MCP Server 与 Codebuddy Skill 使用。</p>
+      <div class="grid2">
+        <div>
+          <h3 style="font-size:14px">REST API（后端模式可用）</h3>
+          <pre id="apiSamples"></pre>
+        </div>
+        <div>
+          <h3 style="font-size:14px">MCP 工具（stdio）</h3>
+          <pre>{
+  "mcpServers": {
+    "multicloud-search": {
+      "command": "python3",
+      "args": ["&lt;项目绝对路径&gt;/mcp/multicloud_mcp_server.py"]
+    }
+  }
+}</pre>
+          <p class="hint" style="margin-top:6px">工具：search_cloud_docs、compare_ecs_price、find_equivalent_products、list_cloud_products、list_cloud_regions。详见 <code class="inline">docs/MCP_USAGE.md</code>。</p>
+        </div>
+      </div>
+      <h3 style="font-size:14px;margin-top:18px">Codebuddy Skill 调用示例</h3>
+      <pre>python3 cli.py docs "对象存储" --json
+python3 cli.py price --vcpu 4 --memory 8 --region cn-beijing --charge-type monthly
+python3 cli.py equiv CVM</pre>
+      <div class="meta-row" id="apiMeta"></div>
+    </div>
+  </section>
+
+  <footer>
+    数据为人工维护快照，正式对外报价与方案请以各厂商官网为准 ｜ 数据来源与刷新策略见 <code class="inline">docs/DATA_SOURCES.md</code>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  /* ------------------------------------------------------------------ *
+   * 数据装载：优先使用内联数据（单文件静态部署），否则从 /data 拉取
+   * ------------------------------------------------------------------ */
+  var DATA = { products:null, prices:null, mode:"" };
+  var VENDOR_ORDER = ["tencent","aliyun","huawei","volcengine"];
+
+  function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g, function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
+  function safeUrl(u){ u = String(u||""); return /^https:\/\//i.test(u) ? u : "#"; }
+  function el(id){ return document.getElementById(id); }
+
+  function boot(){
+    if (window.__EMBEDDED_DATA__){
+      DATA.products = window.__EMBEDDED_DATA__.products;
+      DATA.prices = window.__EMBEDDED_DATA__.prices;
+      DATA.mode = "静态内联数据";
+      init();
+      return;
+    }
+    // 依次尝试多个数据路径：以项目根为站点根时用 data/，以 web/ 为站点根时用 ../data/
+    var CANDIDATES = [
+      { label: "data/", products: "data/products.json", prices: "data/ecs_prices.json" },
+      { label: "../data/", products: "../data/products.json", prices: "../data/ecs_prices.json" }
+    ];
+    var lastError = null;
+
+    function tryLoad(i){
+      if (i >= CANDIDATES.length){ showLoadError(lastError); return; }
+      var c = CANDIDATES[i];
+      Promise.all([
+        fetch(c.products).then(function(r){ if(!r.ok) throw new Error("HTTP " + r.status); return r.json(); }),
+        fetch(c.prices).then(function(r){ if(!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+      ]).then(function(res){
+        DATA.products = res[0]; DATA.prices = res[1];
+        DATA.mode = "后端服务模式";
+        init();
+      }).catch(function(err){ lastError = err; tryLoad(i + 1); });
+    }
+    tryLoad(0);
+  }
+
+  function showLoadError(err){
+    var isFile = location.protocol === "file:";
+    el("modeTag").textContent = isFile ? "需通过服务访问" : "数据加载失败";
+    var msg;
+    if (isFile){
+      msg =
+        '<h2 style="margin-top:0">当前是以本地文件方式打开的，浏览器禁止读取本地 JSON 数据</h2>' +
+        '<p class="hint">浏览器的同源策略不允许 <code class="inline">file://</code> 页面通过 fetch 读取本地文件，' +
+        '因此这个版本（<code class="inline">web/index.html</code>）必须由后端服务托管。两种解决方式，任选其一：</p>' +
+        '<p><b>方式 1（零后端，推荐给直接查看）</b>：使用已内联数据的单文件版本，双击即可用</p>' +
+        '<pre>python3 tools/build_static.py     # 生成 dist/index.html</pre>' +
+        '<p>已生成过的话，点这里直接打开：<a href="../dist/index.html">../dist/index.html</a></p>' +
+        '<p><b>方式 2（完整功能，含 REST API）</b>：启动后端服务后用 http 访问</p>' +
+        '<pre>python3 server/app.py\n# 然后访问 http://127.0.0.1:8787</pre>';
+    } else {
+      msg =
+        '<h2 style="margin-top:0">数据加载失败：' + esc(err ? err.message : "unknown") + '</h2>' +
+        '<p class="hint">页面已加载，但没能取到数据文件（已尝试 <code class="inline">data/</code> 与 ' +
+        '<code class="inline">../data/</code> 两个路径）。常见原因与处理：</p>' +
+        '<ul class="hint">' +
+        '<li>不是由本项目后端托管的（例如 IDE 内置静态服务器只暴露了 <code class="inline">web/</code> 目录）→ 改用 <code class="inline">python3 server/app.py</code> 启动后访问 ' +
+        '<a href="http://127.0.0.1:8787" target="_blank" rel="noopener noreferrer">http://127.0.0.1:8787</a></li>' +
+        '<li>后端未启动或端口不同 → 检查 <code class="inline">/api/health</code> 是否返回 <code class="inline">{"status":"ok"}</code></li>' +
+        '<li>数据文件缺失 → 确认 <code class="inline">data/products.json</code>、<code class="inline">data/ecs_prices.json</code> 存在，并执行 <code class="inline">python3 tools/check_data.py</code></li>' +
+        '</ul>' +
+        '<p>或直接使用零后端的单文件版本：<a href="../dist/index.html">../dist/index.html</a>（由 <code class="inline">python3 tools/build_static.py</code> 生成）</p>';
+    }
+    el("docResults").innerHTML = '<div class="panel">' + msg + '</div>';
+  }
+
+  /* ------------------------------------------------------------------ *
+   * 检索引擎（与 core/engine.py 逻辑一致的前端实现）
+   * ------------------------------------------------------------------ */
+  var IDX = null;
+  function buildIndex(){
+    var doc = DATA.products;
+    var catMap = {}; (doc.categories||[]).forEach(function(c){ catMap[c.id]=c.name; });
+    var equivAlias = {};
+    Object.keys(doc.equivalents||{}).forEach(function(k){
+      var it = doc.equivalents[k];
+      [k, it.label].concat(it.aliases||[]).forEach(function(a){
+        a = String(a||"").trim().toLowerCase();
+        if(!a) return; (equivAlias[a] = equivAlias[a] || []).push(k);
+      });
+    });
+    var vendorAlias = {"腾讯":"tencent","腾讯云":"tencent","tencent":"tencent","tc":"tencent",
+      "阿里":"aliyun","阿里云":"aliyun","aliyun":"aliyun","ali":"aliyun",
+      "华为":"huawei","华为云":"huawei","huawei":"huawei","hw":"huawei",
+      "火山":"volcengine","火山引擎":"volcengine","volcengine":"volcengine","字节":"volcengine","volc":"volcengine"};
+    var products = (doc.products||[]).map(function(p){
+      var v = (doc.vendors||{})[p.vendor] || {};
+      var eq = (doc.equivalents||{})[p.equiv] || {};
+      var item = Object.assign({}, p);
+      item.vendor_name = v.name || p.vendor;
+      item.vendor_color = v.color || "#666";
+      item.category_name = catMap[p.cat] || p.cat;
+      item.equiv_label = eq.label || "";
+      item._hay = [p.name,p.en,p.summary,(p.aliases||[]).join(" "),item.equiv_label,item.category_name,item.vendor_name]
+        .join(" ").toLowerCase();
+      return item;
+    });
+    IDX = { catMap:catMap, equivAlias:equivAlias, vendorAlias:vendorAlias, products:products,
+            vendors:doc.vendors||{}, equivalents:doc.equivalents||{} };
+  }
+
+  function tokens(s){ return (String(s||"").toLowerCase().match(/[a-z0-9]+|[\u4e00-\u9fff]+/g) || []); }
+
+  function scoreProduct(p, q, toks, equivHits){
+    var score = 0, reasons = [];
+    var name = (p.name||"").toLowerCase(), en = (p.en||"").toLowerCase();
+    var aliases = (p.aliases||[]).map(function(a){ return String(a).toLowerCase(); });
+    if(q){
+      if(q === name || aliases.indexOf(q) >= 0){ score += 100; reasons.push("名称精确匹配"); }
+      else if(name.indexOf(q) >= 0){ score += 55; reasons.push("产品名匹配"); }
+      else if(en.indexOf(q) >= 0){ score += 40; reasons.push("英文名匹配"); }
+      else if(aliases.some(function(a){ return q.indexOf(a)>=0 || a.indexOf(q)>=0; })){ score += 45; reasons.push("别名匹配"); }
+    }
+    if(equivHits.indexOf(p.equiv) >= 0){ score += 38; reasons.push("同类产品映射"); }
+    toks.forEach(function(t){
+      if(t.length < 2 && !/^[a-z0-9]$/.test(t)) return;
+      if(name.indexOf(t) >= 0) score += 18;
+      else if(en.indexOf(t) >= 0) score += 12;
+      else if(aliases.some(function(a){ return a.indexOf(t)>=0; })) score += 14;
+      else if((p.summary||"").toLowerCase().indexOf(t) >= 0) score += 7;
+      else if(p._hay.indexOf(t) >= 0) score += 4;
+    });
+    if(!reasons.length && score>0) reasons.push("关键词匹配");
+    return { score:score, reasons:reasons };
+  }
+
+  function searchDocs(query, vendorFilter, category, limit){
+    var q = String(query||"").trim().toLowerCase(), toks = tokens(q);
+    var equivHits = [];
+    (IDX.equivAlias[q]||[]).forEach(function(k){ if(equivHits.indexOf(k)<0) equivHits.push(k); });
+    toks.forEach(function(t){ (IDX.equivAlias[t]||[]).forEach(function(k){ if(equivHits.indexOf(k)<0) equivHits.push(k); }); });
+
+    var implied = [];
+    toks.forEach(function(t){ var v = IDX.vendorAlias[t]; if(v && implied.indexOf(v)<0) implied.push(v); });
+    var vf = (vendorFilter && vendorFilter.length && vendorFilter.length < 4) ? vendorFilter.slice() : (vendorFilter||[]).slice();
+    if((!vendorFilter || vendorFilter.length===4) && implied.length && implied.length<4) vf = implied;
+
+    var out = [];
+    IDX.products.forEach(function(p){
+      if(vf && vf.length && vf.indexOf(p.vendor) < 0) return;
+      if(category && p.cat !== category) return;
+      var sc = q ? scoreProduct(p, q, toks, equivHits) : { score:1, reasons:["全量列表"] };
+      if(sc.score <= 0) return;
+      out.push(Object.assign({}, p, { score:sc.score, reasons:sc.reasons }));
+    });
+    out.sort(function(a,b){
+      if(b.score !== a.score) return b.score - a.score;
+      var d = VENDOR_ORDER.indexOf(a.vendor) - VENDOR_ORDER.indexOf(b.vendor);
+      return d !== 0 ? d : a.name.localeCompare(b.name);
+    });
+    var total = out.length;
+    return { total:total, equivHits:equivHits, results:out.slice(0, limit||24), vendorFilter:vf };
+  }
+
+  function siteSearchUrl(vendorId, kw){
+    var v = IDX.vendors[vendorId] || {};
+    var tpl = v.doc_search || v.doc_home || "";
+    return tpl.indexOf("{q}") >= 0 ? tpl.replace("{q}", encodeURIComponent(kw||"")) : tpl;
+  }
+
+  /* ------------------------------------------------------------------ *
+   * 渲染：文档搜索
+   * ------------------------------------------------------------------ */
+  var docVendorState = {};
+  function selectedVendors(scope){
+    return VENDOR_ORDER.filter(function(v){ return docVendorState[scope+":"+v] !== false; });
+  }
+  function renderVendorToggles(containerId, scope, onChange){
+    var box = el(containerId); box.innerHTML = "";
+    VENDOR_ORDER.forEach(function(v){
+      var conf = IDX.vendors[v] || {};
+      docVendorState[scope+":"+v] = true;
+      var label = document.createElement("label");
+      label.className = "vendor-toggle";
+      label.innerHTML = '<input type="checkbox" checked data-v="'+v+'"/>' +
+        '<span class="dot" style="background:'+esc(conf.color||"#666")+'"></span>' + esc(conf.name||v);
+      label.querySelector("input").addEventListener("change", function(e){
+        docVendorState[scope+":"+v] = e.target.checked; onChange();
+      });
+      box.appendChild(label);
+    });
+  }
+
+  function renderDocs(){
+    var q = el("q").value.trim();
+    var vendorSel = selectedVendors("doc");
+    if(!vendorSel.length){
+      el("docMeta").innerHTML = "";
+      el("docResults").innerHTML = '<div class="panel empty">请至少勾选一家云厂商。</div>';
+      el("docFallback").style.display = "none";
+      return;
+    }
+    var res = searchDocs(q, vendorSel, el("docCategory").value, parseInt(el("docLimit").value,10));
+    var meta = el("docMeta");
+    var groups = {};
+    res.results.forEach(function(r){ (groups[r.equiv] = groups[r.equiv] || []).push(r); });
+    var groupTxt = Object.keys(groups).filter(function(k){ return k; })
+      .map(function(k){ var vs = {}; groups[k].forEach(function(r){ vs[r.vendor]=1; });
+        return (IDX.equivalents[k]||{}).label + "（" + Object.keys(vs).length + " 家）"; })
+      .slice(0,6).join(" ｜ ");
+    meta.innerHTML = '命中 <b>' + res.total + '</b> 条，展示 ' + res.results.length + ' 条' +
+      (groupTxt ? ' ｜ 同类覆盖：' + esc(groupTxt) : '') +
+      ' ｜ 索引快照 ' + esc(DATA.products.snapshot_date || "-");
+
+    var box = el("docResults");
+    if(!res.results.length){
+      box.innerHTML = '<div class="panel empty">本地索引未命中「' + esc(q) + '」。可直接跳转四家文档站内搜索 ↓</div>';
+    } else {
+      box.innerHTML = res.results.map(function(r){
+        return '<div class="card">' +
+          '<div class="head">' +
+            '<div><h3>' + esc(r.name) + '</h3>' + (r.en ? '<div class="en">' + esc(r.en) + '</div>' : '') + '</div>' +
+            '<span class="badge" style="background:' + esc(r.vendor_color) + '">' + esc(r.vendor_name) + '</span>' +
+          '</div>' +
+          '<div class="sum">' + esc(r.summary) + '</div>' +
+          '<div class="foot">' +
+            '<span class="pill">' + esc(r.category_name) + '</span>' +
+            (r.equiv_label ? '<span class="pill">同类：' + esc(r.equiv_label) + '</span>' : '') +
+            '<a class="ghost" style="text-decoration:none" href="' + esc(safeUrl(r.doc_url)) + '" target="_blank" rel="noopener noreferrer">官方文档 ↗</a>' +
+            '<a class="ghost" style="text-decoration:none" href="' + esc(siteSearchUrl(r.vendor, q || r.name)) + '" target="_blank" rel="noopener noreferrer">站内搜索</a>' +
+          '</div>' +
+        '</div>';
+      }).join("");
+    }
+
+    var fb = el("docFallback");
+    if(q){
+      fb.style.display = "";
+      fb.innerHTML = '<h2>厂商文档站内搜索直达</h2><p class="hint">本地索引覆盖主流产品；长尾文档（API 细节、故障处理等）可用官方站内搜索兜底。</p><div class="chips">' +
+        VENDOR_ORDER.map(function(v){
+          return '<a class="chip" href="' + esc(siteSearchUrl(v, q)) + '" target="_blank" rel="noopener noreferrer">在' +
+                 esc((IDX.vendors[v]||{}).name||v) + '文档中搜索「' + esc(q) + '」↗</a>';
+        }).join("") + '</div>';
+    } else { fb.style.display = "none"; }
+  }
+
+  /* ------------------------------------------------------------------ *
+   * 渲染：价格对比
+   * ------------------------------------------------------------------ */
+  var lastPriceRows = [], lastPriceCharge = "monthly";
+
+  function comparePrice(){
+    var prices = DATA.prices;
+    var region = el("pRegion").value;
+    var spec = el("pSpec").value;
+    var vcpu = el("pVcpu").value ? parseInt(el("pVcpu").value,10) : null;
+    var mem = el("pMem").value ? parseInt(el("pMem").value,10) : null;
+    var series = el("pSeries").value;
+    var charge = el("pCharge").value;
+    var vendors = selectedVendors("price");
+    var regionConf = (prices.regions||[]).filter(function(r){ return r.id===region; })[0] || {};
+    if(!vendors.length){
+      el("priceSummary").innerHTML = "";
+      el("priceTable").querySelector("thead").innerHTML = "";
+      el("priceTable").querySelector("tbody").innerHTML = '<tr><td class="empty">请至少勾选一家云厂商。</td></tr>';
+      lastPriceRows = [];
+      return;
+    }
+
+    var rows = (prices.items||[]).filter(function(it){
+      if(vendors.indexOf(it.vendor) < 0) return false;
+      if(spec && it.spec_id !== spec) return false;
+      if(vcpu !== null && it.vcpu !== vcpu) return false;
+      if(mem !== null && it.memory_gb !== mem) return false;
+      if(series && it.series !== series) return false;
+      return !!(it.prices||{})[region];
+    }).map(function(it){
+      var p = it.prices[region];
+      var vr = ((regionConf.vendor_regions||{})[it.vendor]) || {};
+      return { vendor:it.vendor, vendor_name:(IDX.vendors[it.vendor]||{}).name||it.vendor,
+        vendor_color:(IDX.vendors[it.vendor]||{}).color||"#666",
+        instance_type:it.instance_type, family:it.family, series:it.series, spec_id:it.spec_id,
+        vcpu:it.vcpu, memory_gb:it.memory_gb, region_name:regionConf.name||region,
+        vendor_region:(vr.name||"") + (vr.id ? "（"+vr.id+"）" : ""),
+        on_demand_hour:p.on_demand_hour, monthly:p.monthly, source_url:it.source_url };
+    });
+
+    rows.sort(function(a,b){ return (a[charge]||0) - (b[charge]||0); });
+    var best = rows.length ? rows[0][charge] : 0;
+    rows.forEach(function(r){
+      r.is_cheapest = best && r[charge] === best;
+      r.diff = best ? Math.round((r[charge]-best)/best*1000)/10 : null;
+    });
+    lastPriceRows = rows; lastPriceCharge = charge;
+
+    var thead = el("priceTable").querySelector("thead");
+    thead.innerHTML = '<tr><th>厂商</th><th>实例规格</th><th>实例族</th><th>配置</th><th>厂商地域</th>' +
+      '<th>按量（元/小时）</th><th>包月刊例价（元/月）</th><th>较最低价</th><th>官方价格页</th></tr>';
+    var tbody = el("priceTable").querySelector("tbody");
+    if(!rows.length){
+      tbody.innerHTML = '<tr><td colspan="9" class="empty">当前筛选条件下无数据，请放宽 vCPU / 内存 / 系列条件。</td></tr>';
+    } else {
+      tbody.innerHTML = rows.map(function(r){
+        return '<tr class="' + (r.is_cheapest ? "cheapest" : "") + '">' +
+          '<td><span class="dot" style="background:'+esc(r.vendor_color)+';margin-right:6px"></span>' + esc(r.vendor_name) + '</td>' +
+          '<td><code class="inline">' + esc(r.instance_type) + '</code></td>' +
+          '<td>' + esc(r.family) + '</td>' +
+          '<td>' + r.vcpu + 'C' + r.memory_gb + 'G</td>' +
+          '<td>' + esc(r.vendor_region) + '</td>' +
+          '<td class="price ' + (lastPriceCharge==="on_demand_hour" && r.is_cheapest ? "best":"") + '">' + esc(r.on_demand_hour) + '</td>' +
+          '<td class="price ' + (lastPriceCharge==="monthly" && r.is_cheapest ? "best":"") + '">' + esc(r.monthly) + '</td>' +
+          '<td>' + (r.is_cheapest ? '<b style="color:var(--ok)">最低价</b>' :
+                    (r.diff===null ? "-" : '<span class="delta">+' + r.diff + '%</span>')) + '</td>' +
+          '<td><a href="' + esc(safeUrl(r.source_url)) + '" target="_blank" rel="noopener noreferrer">查看 ↗</a></td>' +
+        '</tr>';
+      }).join("");
+    }
+
+    var sum = el("priceSummary");
+    if(rows.length){
+      var top = rows[0], bottom = rows[rows.length-1];
+      var unit = charge === "monthly" ? "元/月" : "元/小时";
+      sum.innerHTML =
+        '<div class="stat"><div class="k">对比地域</div><div class="v">' + esc(regionConf.name||region) + '</div></div>' +
+        '<div class="stat"><div class="k">最低价（' + unit + '）</div><div class="v" style="color:var(--ok)">' +
+          esc(top.vendor_name) + ' ' + esc(top[charge]) + '</div></div>' +
+        '<div class="stat"><div class="k">最高价（' + unit + '）</div><div class="v">' +
+          esc(bottom.vendor_name) + ' ' + esc(bottom[charge]) + '</div></div>' +
+        '<div class="stat"><div class="k">最大价差</div><div class="v">' +
+          (bottom.diff===null ? "-" : ('+' + bottom.diff + '%')) + '</div></div>' +
+        '<div class="stat"><div class="k">对比条目</div><div class="v">' + rows.length + ' 条</div></div>';
+    } else { sum.innerHTML = ""; }
+
+    el("priceNotice").innerHTML = '<b>计价口径：</b>' + esc(DATA.prices.price_scope || "") +
+      '<br/><b>数据声明：</b>' + esc(DATA.prices.disclaimer || "") +
+      '<br/><b>价格快照日期：</b>' + esc(DATA.prices.snapshot_date || "-") +
+      ' ｜ 下次复核：' + esc(((DATA.prices.data_quality||{}).next_review) || "-");
+  }
+
+  function renderExtras(){
+    var ex = DATA.prices.extras || {};
+    var rowsDef = [
+      ["SSD 系统盘（元/GB/月）","system_disk_ssd_per_gb_month"],
+      ["固定带宽（元/Mbps/月）","bandwidth_fixed_per_mbps_month"],
+      ["按流量计费（元/GB）","traffic_per_gb"]
+    ];
+    el("extraTable").querySelector("thead").innerHTML =
+      '<tr><th>资源项</th>' + VENDOR_ORDER.map(function(v){ return '<th>' + esc((IDX.vendors[v]||{}).name||v) + '</th>'; }).join("") + '</tr>';
+    el("extraTable").querySelector("tbody").innerHTML = rowsDef.map(function(d){
+      var m = ex[d[1]] || {};
+      return '<tr><td>' + esc(d[0]) + '</td>' + VENDOR_ORDER.map(function(v){
+        return '<td>' + esc(m[v]===undefined ? "-" : m[v]) + '</td>'; }).join("") + '</tr>';
+    }).join("");
+  }
+
+  function priceToMarkdown(){
+    if(!lastPriceRows.length) return "无数据";
+    var head = "| 厂商 | 实例规格 | 实例族 | 配置 | 厂商地域 | 按量(元/时) | 包月(元/月) | 较最低价 |\n| --- | --- | --- | --- | --- | --- | --- | --- |";
+    var body = lastPriceRows.map(function(r){
+      return "| " + [r.vendor_name, "`"+r.instance_type+"`", r.family, r.vcpu+"C"+r.memory_gb+"G",
+        r.vendor_region, r.on_demand_hour, r.monthly,
+        (r.is_cheapest ? "**最低**" : (r.diff===null ? "-" : "+"+r.diff+"%"))].join(" | ") + " |";
+    }).join("\n");
+    return head + "\n" + body + "\n\n> 价格快照：" + (DATA.prices.snapshot_date||"") + "，仅供量级参考，正式报价以官网为准。";
+  }
+  function priceToCsv(){
+    var head = ["vendor","instance_type","family","vcpu","memory_gb","vendor_region","on_demand_hour","monthly","diff_vs_cheapest_pct"];
+    var lines = [head.join(",")].concat(lastPriceRows.map(function(r){
+      return [r.vendor_name,r.instance_type,r.family,r.vcpu,r.memory_gb,r.vendor_region,
+        r.on_demand_hour,r.monthly,(r.diff===null?"":r.diff)].map(function(x){
+          var s = String(x==null?"":x); return /[",\n]/.test(s) ? '"'+s.replace(/"/g,'""')+'"' : s; }).join(",");
+    }));
+    return lines.join("\n");
+  }
+  function download(name, text, type){
+    var blob = new Blob(["\ufeff"+text], {type:type||"text/plain;charset=utf-8"});
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = name; a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+  }
+
+  /* ------------------------------------------------------------------ *
+   * 渲染：同类对照
+   * ------------------------------------------------------------------ */
+  function renderEquiv(){
+    var kw = el("eq").value.trim().toLowerCase();
+    var box = el("equivResults");
+    if(!kw){ box.innerHTML = ""; return; }
+    var keys = (IDX.equivAlias[kw] || []).slice();
+    if(!keys.length){
+      IDX.products.forEach(function(p){
+        var aliases = (p.aliases||[]).map(function(a){ return String(a).toLowerCase(); });
+        if((p.name||"").toLowerCase().indexOf(kw)>=0 || aliases.indexOf(kw)>=0){
+          if(p.equiv && keys.indexOf(p.equiv)<0) keys.push(p.equiv);
+        }
+      });
+    }
+    if(!keys.length){
+      Object.keys(IDX.equivAlias).forEach(function(a){
+        if(a.indexOf(kw)>=0 || kw.indexOf(a)>=0){
+          IDX.equivAlias[a].forEach(function(k){ if(keys.indexOf(k)<0) keys.push(k); });
+        }
+      });
+    }
+    if(!keys.length){
+      box.innerHTML = '<div class="panel empty">未找到「' + esc(kw) + '」的同类映射，请到「产品文档搜索」用关键词检索。</div>';
+      return;
+    }
+    box.innerHTML = keys.slice(0,4).map(function(k){
+      var label = (IDX.equivalents[k]||{}).label || k;
+      var byVendor = {};
+      IDX.products.forEach(function(p){ if(p.equiv===k) (byVendor[p.vendor]=byVendor[p.vendor]||[]).push(p); });
+      var rows = VENDOR_ORDER.map(function(v){
+        var items = byVendor[v] || [];
+        if(!items.length) return '<tr><td><span class="dot" style="background:'+esc((IDX.vendors[v]||{}).color||"#666")+';margin-right:6px"></span>' +
+          esc((IDX.vendors[v]||{}).name||v) + '</td><td colspan="3" style="color:var(--muted)">索引中暂未收录（可用站内搜索确认）</td></tr>';
+        return items.map(function(p){
+          return '<tr><td><span class="dot" style="background:'+esc(p.vendor_color)+';margin-right:6px"></span>' + esc(p.vendor_name) + '</td>' +
+            '<td><b>' + esc(p.name) + '</b>' + (p.en ? ' <span class="en">'+esc(p.en)+'</span>' : '') + '</td>' +
+            '<td>' + esc(p.summary) + '</td>' +
+            '<td><a href="'+esc(safeUrl(p.doc_url))+'" target="_blank" rel="noopener noreferrer">文档 ↗</a></td></tr>';
+        }).join("");
+      }).join("");
+      return '<div class="panel"><h2>' + esc(label) + '</h2>' +
+        '<div class="tablewrap"><table class="equiv-table"><thead><tr><th>厂商</th><th>对位产品</th><th>说明</th><th>链接</th></tr></thead>' +
+        '<tbody>' + rows + '</tbody></table></div></div>';
+    }).join("");
+  }
+
+  /* ------------------------------------------------------------------ *
+   * 初始化
+   * ------------------------------------------------------------------ */
+  function init(){
+    buildIndex();
+    el("modeTag").textContent = DATA.mode;
+
+    // 类目下拉
+    (DATA.products.categories||[]).forEach(function(c){
+      var o = document.createElement("option"); o.value = c.id; o.textContent = c.name;
+      el("docCategory").appendChild(o);
+    });
+    // 地域 / 规格下拉
+    (DATA.prices.regions||[]).forEach(function(r){
+      var o = document.createElement("option"); o.value = r.id; o.textContent = r.name;
+      el("pRegion").appendChild(o);
+    });
+    (DATA.prices.specs||[]).forEach(function(s){
+      var o = document.createElement("option"); o.value = s.id;
+      o.textContent = s.vcpu + "C" + s.memory_gb + "G（" + s.ratio + "）";
+      el("pSpec").appendChild(o);
+    });
+
+    renderVendorToggles("docVendors", "doc", renderDocs);
+    renderVendorToggles("priceVendors", "price", comparePrice);
+
+    // 快捷词
+    var chips = ["对象存储","云服务器","Kubernetes","Redis","MySQL","负载均衡","CDN","日志服务","大模型","WAF","消息队列","数据仓库"];
+    el("quickChips").innerHTML = chips.map(function(c){ return '<span class="chip">' + esc(c) + '</span>'; }).join("");
+    Array.prototype.forEach.call(el("quickChips").querySelectorAll(".chip"), function(node){
+      node.addEventListener("click", function(){ el("q").value = node.textContent; renderDocs(); });
+    });
+    var eqChips = ["CVM","OSS","OBS","TOS","DCS","veDB","弹性伸缩","API 网关","日志服务","机器学习平台"];
+    el("equivChips").innerHTML = eqChips.map(function(c){ return '<span class="chip">' + esc(c) + '</span>'; }).join("");
+    Array.prototype.forEach.call(el("equivChips").querySelectorAll(".chip"), function(node){
+      node.addEventListener("click", function(){ el("eq").value = node.textContent; renderEquiv(); });
+    });
+
+    // 事件
+    el("btnSearch").addEventListener("click", renderDocs);
+    el("q").addEventListener("keydown", function(e){ if(e.key === "Enter") renderDocs(); });
+    el("q").addEventListener("input", debounce(renderDocs, 220));
+    ["docCategory","docLimit"].forEach(function(id){ el(id).addEventListener("change", renderDocs); });
+    ["pRegion","pSpec","pVcpu","pMem","pSeries","pCharge"].forEach(function(id){ el(id).addEventListener("change", comparePrice); });
+    el("btnEquiv").addEventListener("click", renderEquiv);
+    el("eq").addEventListener("keydown", function(e){ if(e.key === "Enter") renderEquiv(); });
+    el("btnCopyMd").addEventListener("click", function(){
+      var md = priceToMarkdown();
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(md).then(function(){ el("btnCopyMd").textContent = "已复制 ✓";
+          setTimeout(function(){ el("btnCopyMd").textContent = "复制为 Markdown"; }, 1500); });
+      } else { download("ecs-price-compare.md", md, "text/markdown;charset=utf-8"); }
+    });
+    el("btnCsv").addEventListener("click", function(){ download("ecs-price-compare.csv", priceToCsv(), "text/csv;charset=utf-8"); });
+
+    Array.prototype.forEach.call(document.querySelectorAll(".tabs button"), function(btn){
+      btn.addEventListener("click", function(){
+        Array.prototype.forEach.call(document.querySelectorAll(".tabs button"), function(b){ b.classList.remove("active"); });
+        btn.classList.add("active");
+        ["docs","price","equiv","api"].forEach(function(t){
+          el("tab-"+t).style.display = (t === btn.dataset.tab) ? "" : "none";
+        });
+      });
+    });
+
+    // API 示例与元信息
+    var origin = location.origin && location.origin.indexOf("http") === 0 ? location.origin : "http://127.0.0.1:8787";
+    el("apiSamples").textContent =
+      "GET " + origin + "/api/health\n" +
+      "GET " + origin + "/api/meta\n" +
+      "GET " + origin + "/api/search?q=对象存储&limit=10\n" +
+      "GET " + origin + "/api/search?q=Kubernetes&vendors=tencent,aliyun\n" +
+      "GET " + origin + "/api/prices/ecs?region=cn-beijing&vcpu=4&memory=8\n" +
+      "GET " + origin + "/api/prices/ecs?spec=8c32g&charge_type=on_demand_hour\n" +
+      "GET " + origin + "/api/equivalents?keyword=CVM\n" +
+      "GET " + origin + "/api/products?vendor=huawei&category=database\n" +
+      "GET " + origin + "/api/regions";
+    var counts = {};
+    IDX.products.forEach(function(p){ counts[p.vendor] = (counts[p.vendor]||0)+1; });
+    el("apiMeta").innerHTML = "收录产品 <b>" + IDX.products.length + "</b> 个（" +
+      VENDOR_ORDER.map(function(v){ return esc((IDX.vendors[v]||{}).name||v) + " " + (counts[v]||0); }).join(" ｜ ") +
+      "） ｜ 价格记录 " + (DATA.prices.items||[]).length + " 条 ｜ 运行模式：" + esc(DATA.mode);
+
+    renderDocs();
+    comparePrice();
+    renderExtras();
+  }
+
+  function debounce(fn, wait){
+    var t; return function(){ clearTimeout(t); t = setTimeout(fn, wait); };
+  }
+
+  boot();
+})();
+</script>
+</body>
+</html>
