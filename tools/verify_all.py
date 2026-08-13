@@ -32,6 +32,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 
 from core import engine  # noqa: E402
+from core.cliutil import strip_shell_comments  # noqa: E402
 
 VENDORS = ["tencent", "aliyun", "huawei", "volcengine"]
 
@@ -276,6 +277,12 @@ def check_mcp(verbose: bool) -> None:
                 ok = False
         record("Skill", "cli.py %s 输出合法 JSON" % " ".join(argv), ok)
 
+    # zsh 误传行尾注释时不应崩溃（macOS 复制粘贴高频场景）
+    p = run([sys.executable, "cli.py", "regions", "#", "地域映射"])
+    zsh_out = p.stdout.decode("utf-8", "replace")
+    record("Skill", "入口脚本容错 zsh 误传的 # 注释参数",
+           p.returncode == 0 and "cn-beijing" in zsh_out and "忽略了被 shell 当成参数的注释" in zsh_out)
+
     # 无人值守自动化范例：进程内取数与 REST 取数两种模式
     p = run([sys.executable, os.path.join("examples", "weekly_price_report.py"), "--stdout"])
     text = p.stdout.decode("utf-8", "replace")
@@ -393,7 +400,7 @@ def check_docs() -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description="一键验收：数据/搜索/价格/API/MCP/前端/文档")
     parser.add_argument("--verbose", action="store_true")
-    args = parser.parse_args()
+    args = parser.parse_args(strip_shell_comments())
 
     print("=" * 78)
     print("多云产品信息一站式检索平台 —— 一键验收")

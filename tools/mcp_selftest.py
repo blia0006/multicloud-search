@@ -16,6 +16,10 @@ import subprocess
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT)
+
+from core.cliutil import strip_shell_comments  # noqa: E402
+
 SERVER = os.path.join(ROOT, "mcp", "multicloud_mcp_server.py")
 
 CASES = [
@@ -39,7 +43,7 @@ CASES = [
 def main() -> int:
     parser = argparse.ArgumentParser(description="MCP Server 自测")
     parser.add_argument("--verbose", action="store_true", help="打印工具返回的完整文本")
-    args = parser.parse_args()
+    args = parser.parse_args(strip_shell_comments())
 
     payload = "".join(json.dumps(c, ensure_ascii=False) + "\n" for c in CASES)
     proc = subprocess.run(  # noqa: S603 - 固定命令，无 shell

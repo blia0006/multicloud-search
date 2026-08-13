@@ -1,7 +1,7 @@
 # 验收清单（逐条对照课题要求）
 
-> 一键跑完全部检查：`python3 tools/verify_all.py`（70 项，退出码 0 即全部通过）
-> 最近一次实测：2026-08-12，**70/70 通过**。
+> 一键跑完全部检查：`python3 tools/verify_all.py`（71 项，退出码 0 即全部通过）
+> 最近一次实测：2026-08-12，**71/71 通过**。
 
 ---
 
@@ -74,7 +74,7 @@
 ```bash
 # 复现验证（新环境从零开始）
 python3 -V                    # >= 3.8
-python3 tools/verify_all.py   # 70 项检查全通过
+python3 tools/verify_all.py   # 71 项检查全通过
 python3 server/app.py         # 访问 http://127.0.0.1:8787
 ```
 
@@ -114,8 +114,8 @@ python3 server/app.py         # 访问 http://127.0.0.1:8787
 
 | 检查 | 命令 | 结果 |
 | --- | --- | --- |
-| 一键验收 | `python3 tools/verify_all.py` | 70/70 通过 |
-| **异地复现（移交模拟）** | 整包复制到另一路径 → `python3 tools/init_project.py` → `python3 tools/verify_all.py` | 初始化正常、MCP 配置自动指向新路径、**70/70 通过** |
+| 一键验收 | `python3 tools/verify_all.py` | 71/71 通过 |
+| **异地复现（移交模拟）** | 整包复制到另一路径 → `python3 tools/init_project.py` → `python3 tools/verify_all.py` | 初始化正常、MCP 配置自动指向新路径、**71/71 通过** |
 | 数据校验 | `python3 tools/check_data.py` | 结构通过，176 产品，覆盖矩阵完整 |
 | 腾讯云链接巡检 | `python3 tools/check_data.py --check-links --vendor tencent` | 44/44 返回 200 |
 | MCP 自测 | `python3 tools/mcp_selftest.py` | 18/18 通过 |

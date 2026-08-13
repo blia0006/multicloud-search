@@ -22,6 +22,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from core import engine  # noqa: E402
+from core.cliutil import strip_shell_comments  # noqa: E402
 
 
 def _dump(payload) -> None:
@@ -138,7 +139,7 @@ def main() -> int:
     sub.add_parser("regions", help="列出支持的地域及厂商地域映射", parents=[common])
     sub.add_parser("meta", help="输出平台元数据", parents=[common])
 
-    args = parser.parse_args()
+    args = parser.parse_args(strip_shell_comments())
     as_json = getattr(args, "json", False)
 
     if args.cmd == "docs":

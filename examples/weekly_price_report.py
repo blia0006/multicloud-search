@@ -34,6 +34,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 
 from core import engine  # noqa: E402
+from core.cliutil import strip_shell_comments  # noqa: E402
 
 VENDOR_ORDER = ["tencent", "aliyun", "huawei", "volcengine"]
 
@@ -137,7 +138,7 @@ def main() -> int:
     parser.add_argument("--api", help="通过 REST API 取数（默认进程内调用）")
     parser.add_argument("--out", help="输出路径，默认 reports/price_report_<日期>.md")
     parser.add_argument("--stdout", action="store_true", help="只打印不写文件")
-    args = parser.parse_args()
+    args = parser.parse_args(strip_shell_comments())
 
     if args.api:
         fetch = lambda region, spec, ct: fetch_api(args.api, region, spec, ct)  # noqa: E731

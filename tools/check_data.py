@@ -28,6 +28,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 
 from core import engine  # noqa: E402
+from core.cliutil import strip_shell_comments  # noqa: E402
 
 # 只允许巡检四家官方域名，避免脚本被数据文件里的任意 URL 引导去请求内网地址（SSRF 防护）
 ALLOWED_HOSTS = {
@@ -183,7 +184,7 @@ def main() -> int:
     parser.add_argument("--timeout", type=float, default=10.0)
     parser.add_argument("--report", help="链接巡检 CSV 输出路径")
     parser.add_argument("--json", action="store_true", help="仅输出统计 JSON")
-    args = parser.parse_args()
+    args = parser.parse_args(strip_shell_comments())
 
     data = engine.get_dataset(force=True)
     if args.json:

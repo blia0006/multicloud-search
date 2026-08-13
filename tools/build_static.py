@@ -21,6 +21,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 
 from core import engine  # noqa: E402
+from core.cliutil import strip_shell_comments  # noqa: E402
 
 
 def _js_json(obj) -> str:
@@ -64,7 +65,7 @@ def build(out_path: str) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description="生成单文件 HTML 版本")
     parser.add_argument("--out", default=os.path.join(ROOT, "dist", "index.html"))
-    args = parser.parse_args()
+    args = parser.parse_args(strip_shell_comments())
     path = build(args.out)
     size = os.path.getsize(path) / 1024.0
     print("已生成单文件版本：%s（%.1f KB）" % (path, size))

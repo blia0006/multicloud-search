@@ -137,7 +137,7 @@ def print_next_steps(config: dict) -> None:
      python3 cli.py price --vcpu 4 --memory 8
      python3 examples/weekly_price_report.py
 
-  ── 一键验收（70 项检查，期望 0 失败）──────────────────────────
+  ── 一键验收（71 项检查，期望 0 失败）──────────────────────────
      python3 tools/verify_all.py
 
   ── 文档 ────────────────────────────────────────────────────
@@ -159,7 +159,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="移交后一键初始化")
     parser.add_argument("--python", default="python3",
                         help="MCP 客户端启动服务端所用的解释器，默认 python3；若不在 PATH 请填绝对路径")
-    args = parser.parse_args()
+    args = parser.parse_args(strip_shell_comments())
 
     print("=" * 74)
     print("多云产品信息一站式检索平台 —— 初始化")

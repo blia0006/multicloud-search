@@ -55,7 +55,7 @@ python3 tools/init_project.py --python /usr/local/bin/python3
 
 > 除该配置文件外，所有代码均使用 `__file__` 相对定位，项目目录可任意移动、任意改名。
 > 已实测两种场景：① 整包复制到另一路径 ② 模拟刚 clone（无 `mcp.local.json`、无 `dist/`）——
-> `python3 tools/verify_all.py` 均为 **70/70 通过**。
+> `python3 tools/verify_all.py` 均为 **71/71 通过**。
 
 ---
 
@@ -257,7 +257,7 @@ cp .codebuddy/skills/multicloud-lookup/SKILL.md ~/.codebuddy/skills/multicloud-l
 ## 8. 冒烟测试清单（部署后逐条验证）
 
 ```bash
-# 0. 一键验收（推荐先跑，覆盖数据/搜索/价格/API/安全/MCP/Skill/Agent/前端/文档共 70 项）
+# 0. 一键验收（推荐先跑，覆盖数据/搜索/价格/API/安全/MCP/Skill/Agent/前端/文档共 71 项）
 python3 tools/verify_all.py
 
 # 1. 数据完整性 + 四家覆盖矩阵（期望：结构校验通过，覆盖完整）
