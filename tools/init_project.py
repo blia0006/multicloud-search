@@ -111,17 +111,23 @@ def print_next_steps(config: dict) -> None:
     step(4, "下一步怎么用")
     dist = os.path.join(ROOT, "dist", "index.html")
     print("""
+  提示：以下命令请整行复制、不要连注释文字一起复制。
+  macOS 默认 shell 是 zsh，交互模式下默认不识别 # 注释，
+  连注释一起粘贴会报 "unrecognized arguments"。
+
   ── 人工查阅（二选一）─────────────────────────────────────────
   A) 零后端，双击即可打开：
      %s
   B) 完整功能（含 REST API），启动后端：
      cd %s
-     python3 server/app.py          →  http://127.0.0.1:8787
+     python3 server/app.py
+     然后浏览器访问 http://127.0.0.1:8787
 
   ── Agent 自动化调用（三条通道）──────────────────────────────
   1) MCP：把下面配置粘贴到 MCP 客户端（IDE 设置 → MCP）
 %s
-     自测：python3 tools/mcp_selftest.py
+     协议自测：
+     python3 tools/mcp_selftest.py
 
   2) Codebuddy Skill：用 Codebuddy 打开本项目目录即自动识别
      技能文件：.codebuddy/skills/multicloud-lookup/SKILL.md
@@ -129,10 +135,10 @@ def print_next_steps(config: dict) -> None:
   3) REST / CLI（脚本、定时任务、CI，无需模型）：
      python3 cli.py docs "对象存储"
      python3 cli.py price --vcpu 4 --memory 8
-     python3 examples/weekly_price_report.py     # 自动生成价格对比周报
+     python3 examples/weekly_price_report.py
 
-  ── 一键验收 ────────────────────────────────────────────────
-     python3 tools/verify_all.py                 # 70 项检查，期望 0 失败
+  ── 一键验收（70 项检查，期望 0 失败）──────────────────────────
+     python3 tools/verify_all.py
 
   ── 文档 ────────────────────────────────────────────────────
      README.md                项目总览

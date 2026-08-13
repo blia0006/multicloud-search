@@ -297,6 +297,7 @@ python3 tools/build_static.py
 | 现象 | 原因 | 处理 |
 | --- | --- | --- |
 | `Address already in use` | 8787 端口被占用 | `python3 server/app.py --port 8888` 或 `lsof -i:8787` 后释放 |
+| 命令报 `unrecognized arguments: # ...` | macOS 默认 shell 是 **zsh**，交互模式下默认不识别行尾 `#` 注释（bash 才默认识别），把注释当成了参数 | 只复制命令本身、不带注释；或先执行 `setopt interactive_comments`（可写入 `~/.zshrc` 永久生效） |
 | 浏览器显示"数据加载失败：Failed to fetch" | ① 直接用 `file://` 双击打开了 `web/index.html`（浏览器禁止本地 fetch）；② 用 IDE / 其他静态服务器托管，站点根只暴露了 `web/` 目录，取不到 `data/*.json` | 用形态 A 启动服务后访问 <http://127.0.0.1:8787>；或用 `python3 tools/build_static.py` 生成 `dist/index.html` 双击打开。页面已内置排障指引与单文件版直达链接 |
 | `web/index.html` 与 `dist/index.html` 该用哪个 | `web/` 版需后端托管（走 `/data/*.json`，附带 REST API）；`dist/` 版数据已内联，零后端 | 演示/发给同事 → `dist/index.html`；需要 API/MCP 或数据热更新 → 形态 A |
 | 页面能打开但无数据、控制台 404 | `MCS_DATA_DIR` 指向错误 | 确认 `data/products.json`、`data/ecs_prices.json` 存在且可读 |

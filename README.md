@@ -15,9 +15,15 @@
 >
 > ```bash
 > cd 课题一
-> python3 tools/init_project.py     # 环境与数据检查 → 生成本机 MCP 配置 → 构建单文件版 → 打印上手指引
-> python3 tools/verify_all.py       # 70 项自检，期望 0 失败
+> # 环境与数据检查 → 生成本机 MCP 配置 → 构建单文件版 → 打印上手指引
+> python3 tools/init_project.py
+> # 70 项自检，期望 0 失败
+> python3 tools/verify_all.py
 > ```
+>
+> 💡 macOS 默认 shell 为 zsh，交互模式下默认不识别行尾 `#` 注释。
+> 复制命令时请**整行只复制命令本身**，否则会报 `unrecognized arguments`。
+> （或先执行 `setopt interactive_comments` 开启注释支持。）
 >
 > 全部代码使用相对定位（`__file__`），项目目录可任意移动；唯一需要绝对路径的是 MCP 客户端配置：
 > 入库的 `config/mcp.example.json` 只含占位符，真实路径由上面的脚本生成到 `config/mcp.local.json`（已 gitignore）。
