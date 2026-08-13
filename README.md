@@ -79,7 +79,7 @@ python3 tools/mcp_selftest.py                    # MCP 协议 + 5 个工具自�
 │   ├── multicloud_mcp_server.py   # MCP Server（stdio / JSON-RPC 2.0，5 个工具）
 │   └── MCP_SERVER_README.md       # MCP 模块 README（快速上手，避免与根 README 同名）
 ├── .codebuddy/skills/multicloud-lookup/SKILL.md   # Codebuddy Skill 定义
-├── config/mcp.example.json        # MCP 客户端配置示例（绝对路径已填好）
+├── config/mcp.example.json        # MCP 客户端配置模板（仅占位符；本机配置由 init_project.py 生成到 mcp.local.json）
 ├── examples/
 │   └── weekly_price_report.py     # 自动化调用范例：生成 ECS 价格对比周报（可挂 cron/CI）
 ├── tools/
